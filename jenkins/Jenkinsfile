@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     AWS_REGION = 'us-west-2'
-    ECR_REGISTRY = '389426476195.dkr.ecr.us-west-2.amazonaws.com'
+    ECR_REGISTRY = '389854136195.dkr.ecr.us-west-2.amazonaws.com'
     IMAGE_NAME = 'bitcoin-price-service'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
     ECR_REPO = "${ECR_REGISTRY}/${IMAGE_NAME}"

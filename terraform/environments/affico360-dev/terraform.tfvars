@@ -1,4 +1,4 @@
-aws_account_id = "389426476195"
+aws_account_id = "389854136195"
 
 ### Oregon (us-west-2)
 aws_region_location = "us-west-2" 

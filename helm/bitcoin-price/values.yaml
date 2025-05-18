@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: 389426476195.dkr.ecr.us-west-2.amazonaws.com/bitcoin-api
+  repository: 389854136195.dkr.ecr.us-west-2.amazonaws.com/bitcoin-api
   tag: latest
   pullPolicy: Always
 

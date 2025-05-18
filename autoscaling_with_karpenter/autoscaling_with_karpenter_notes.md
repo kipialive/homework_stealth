@@ -2,7 +2,7 @@
 
 cd ~/Interlore/Git/homework_stealth/autoscaling_with_karpenter
 
-export ACCOUNT_ID="389426476195"
+export ACCOUNT_ID="389854136195"
 export REGION="us-west-2"
 export CLUSTER_NAME="affico360-dev-eks-01"
 export KARPENTER_VERSION="1.4.0"
@@ -172,7 +172,7 @@ kubectl get sa -n karpenter karpenter -o yaml
 kubectl logs -n karpenter -l app.kubernetes.io/name=karpenter
 
 aws sqs get-queue-attributes \
-  --queue-url https://sqs.us-west-2.amazonaws.com/389426476195/karpenter-interruption-queue \
+  --queue-url https://sqs.us-west-2.amazonaws.com/389854136195/karpenter-interruption-queue \
   --attribute-name All
 
 ## Restart deployment after adding IAM Role ##

@@ -1,8 +1,8 @@
-Replace "389426476195" to "<account_id>" - in ALL FILES !!!!
+Replace "389854136195" to "<real_account_id>" - in ALL FILES !!!!
 
 # 1. Microservice Deployment with Helm #
 cd ~/Interlore/Git/homework_stealth
-export ACCOUNT_ID="389426476195"
+export ACCOUNT_ID="389854136195"
 
 # Create Docker Image
 docker build --platform linux/amd64,linux/arm64 -t bitcoin-api .

@@ -9,7 +9,7 @@
         "sqs:DeleteMessage",
         "sqs:GetQueueAttributes"
       ],
-      "Resource": "arn:aws:sqs:us-west-2:389426476195:karpenter-interruption-queue"
+      "Resource": "arn:aws:sqs:us-west-2:389854136195:karpenter-interruption-queue"
     }
   ]
 }

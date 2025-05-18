@@ -32,11 +32,11 @@ terraform destroy
 ```bash
 # aws eks --region <region-code> update-kubeconfig --name <cluster_name>
 > aws eks --region us-west-2 update-kubeconfig --name affico360-dev-eks-01
-#-# Added new context arn:aws:eks:us-west-2:389426476195:cluster/affico360-dev-eks-01 to /Users/kipialive/.kube/config
+#-# Added new context arn:aws:eks:us-west-2:389854136195:cluster/affico360-dev-eks-01 to /Users/kipialive/.kube/config
 
 # kubectx <NEW_NAME>=<NAME> : rename context <NAME> to <NEW_NAME>
-> kubectx dev_eks_affico360=arn:aws:eks:us-west-2:389426476195:cluster/affico360-dev-eks-01
-#-# Context "arn:aws:eks:us-west-2:389426476195:cluster/affico360-dev-eks-01" renamed to "dev_eks_affico360".
+> kubectx dev_eks_affico360=arn:aws:eks:us-west-2:389854136195:cluster/affico360-dev-eks-01
+#-# Context "arn:aws:eks:us-west-2:389854136195:cluster/affico360-dev-eks-01" renamed to "dev_eks_affico360".
 
 # List connected EKS's
 > lscl

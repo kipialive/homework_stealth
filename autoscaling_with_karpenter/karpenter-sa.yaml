@@ -4,5 +4,5 @@ metadata:
   name: karpenter
   namespace: karpenter
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::389426476195:role/KarpenterControllerRole-eks-affico360
+    eks.amazonaws.com/role-arn: arn:aws:iam::389854136195:role/KarpenterControllerRole-eks-affico360
 automountServiceAccountToken: true
