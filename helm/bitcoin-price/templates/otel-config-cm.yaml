@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: otel-config
+    app.kubernetes.io/managed-by: Helm
+data:
+  otel-config.yaml: |-
+{{ .Files.Get "files/otel-config.yaml" | indent 4 }}

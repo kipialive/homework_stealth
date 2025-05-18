@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scale-test
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: scale-test
+  template:
+    metadata:
+      labels:
+        app: scale-test
+    spec:
+      containers:
+        - name: pause
+          image: public.ecr.aws/eks-distro/kubernetes/pause:3.5
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"

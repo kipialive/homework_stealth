@@ -1,0 +1,79 @@
+pipeline {
+  agent any
+
+  environment {
+    AWS_REGION = 'us-west-2'
+    ECR_REGISTRY = '389426476195.dkr.ecr.us-west-2.amazonaws.com'
+    IMAGE_NAME = 'bitcoin-price-service'
+    IMAGE_TAG = "${env.BUILD_NUMBER}"
+    ECR_REPO = "${ECR_REGISTRY}/${IMAGE_NAME}"
+    HELM_RELEASE = 'bitcoin'
+    HELM_NAMESPACE = 'test-bitcoin-price'
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Lint Kubernetes YAMLs') {
+      steps {
+        sh '''
+          curl -sSL https://github.com/stackrox/kube-linter/releases/latest/download/kube-linter-linux.tar.gz | tar -xz
+          ./kube-linter lint ./k8s || true
+        '''
+      }
+    }
+
+    stage('Docker Build & Push to ECR') {
+      steps {
+        withAWS(region: "${AWS_REGION}", credentials: 'aws-jenkins-creds') {
+          sh '''
+            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+            docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+            docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${ECR_REPO}:${IMAGE_TAG}
+            docker push ${ECR_REPO}:${IMAGE_TAG}
+          '''
+        }
+      }
+    }
+
+    stage('Deploy with Helm') {
+      steps {
+        withAWS(region: "${AWS_REGION}", credentials: 'aws-jenkins-creds') {
+          sh '''
+            helm upgrade --install ${HELM_RELEASE} ./helm \
+              --namespace ${HELM_NAMESPACE} \
+              --create-namespace \
+              --set image.repository=${ECR_REPO} \
+              --set image.tag=${IMAGE_TAG}
+          '''
+        }
+      }
+    }
+
+    stage('Optional: Notify or Reload Prometheus') {
+      steps {
+        // Example: Reload Prometheus config if using a sidecar or configmap trigger
+        script {
+          sh 'kubectl rollout restart deployment prometheus -n monitoring || true'
+        }
+
+        // Optional Slack Notification
+        // slackSend(channel: '#devops-alerts', message: "Deployment ${BUILD_NUMBER} complete!")
+      }
+    }
+  }
+
+  post {
+    failure {
+      echo "Build failed"
+    }
+    success {
+      echo "Build & deploy completed successfully!"
+    }
+  }
+}

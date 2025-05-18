@@ -1,0 +1,23 @@
+mode: deployment
+
+image:
+  repository: otel/opentelemetry-collector
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+config:
+  receivers:
+    otlp:
+      protocols:
+        grpc: {}
+        http: {}
+
+  exporters:
+    otlphttp:
+      endpoint: http://jaeger-collector.monitoring.svc.cluster.local:4318
+
+  service:
+    pipelines:
+      traces:
+        receivers: [otlp]
+        exporters: [otlphttp]

@@ -1,0 +1,64 @@
+~/Interlore/Git/homework_stealth/autoscaling_with_karpenter ❯ ps -ef|grep port-forward                                                                                                                                             ≡ 05:46:41
+  501 43838 14976   0  5:45AM ttys002    0:00.12 kubectl port-forward svc/test-api-service 8000:80 -n test-bitcoin-price
+  501 43839 14976   0  5:45AM ttys002    0:00.10 kubectl port-forward svc/monitoring-grafana -n monitoring 3000:80
+  501 43840 14976   0  5:45AM ttys002    0:00.10 kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090 -n monitoring
+  501 43841 14976   0  5:45AM ttys002    0:00.10 kubectl port-forward svc/jaeger-query 16686:16686 -n monitoring
+  501 43858 14976   0  5:46AM ttys002    0:00.00 grep -iE --color=auto port-forward
+
+
+~/Interlore/Git/homework_stealth/autoscaling_with_karpenter ❯ curl http://localhost:8000/metrics                                                                                                                                   ≡ 05:46:52
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 408.0
+python_gc_objects_collected_total{generation="1"} 455.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 145.0
+python_gc_collections_total{generation="1"} 13.0
+python_gc_collections_total{generation="2"} 1.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="11",patchlevel="12",version="3.11.12"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 4.8592896e+08
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 5.1982336e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.74751187816e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 66.66
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 18.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP price_requests_total Total number of price requests
+# TYPE price_requests_total counter
+price_requests_total 2.0
+# HELP price_requests_created Total number of price requests
+# TYPE price_requests_created gauge
+price_requests_created 1.7475118799901302e+09
+
+
+~/Interlore/Git/homework_stealth/autoscaling_with_karpenter ❯ curl http://localhost:8000/price                                                                                                                                     ≡ 05:47:05
+{"crypto":"bitcoin","price_usd":103308,"ILS":"3.75","USD":"1.00"}%
+
+
+~/Interlore/Git/homework_stealth/autoscaling_with_karpenter ❯ curl http://localhost:8000/healthz                                                                                                                                   ≡ 05:47:13
+{"status":"ok"}%
+
+
+~/Interlore/Git/homework_stealth/autoscaling_with_karpenter ❯ curl http://localhost:8000/trace-test                                                                                                                                ≡ 05:47:26
+{"message":"trace manually triggered"}%
+

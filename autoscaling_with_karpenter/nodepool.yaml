@@ -1,0 +1,29 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: mixed-capacity
+  annotations:
+    karpenter.sh/ttlSecondsUntilExpired: "86400"  # 24 hours
+spec:
+  template:
+    metadata:
+      labels:
+        type: mixed-workers
+    spec:
+      nodeClassRef:
+        name: mixed-capacity
+        kind: EC2NodeClass
+        group: karpenter.k8s.aws
+      requirements:
+        - key: "node.kubernetes.io/instance-type"
+          operator: In
+          values: ["t3a.medium", "t3a.large"]
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ["spot", "on-demand"]
+  limits:
+    cpu: 1000
+    memory: 1000Gi
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 30s

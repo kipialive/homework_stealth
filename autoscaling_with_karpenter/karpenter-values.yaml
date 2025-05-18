@@ -1,0 +1,14 @@
+controller:
+  serviceAccount:
+    create: false
+    name: karpenter
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::389426476195:role/KarpenterControllerRole-eks-affico360
+
+settings:
+  clusterName: affico360-dev-eks-01
+  aws:
+    clusterName: affico360-dev-eks-01
+    clusterEndpoint: https://12EE2FD6C7D5B400A7B1A37D189099A8.gr7.us-west-2.eks.amazonaws.com
+    defaultInstanceProfile: KarpenterNodeInstanceProfile-eks-affico360
+    interruptionQueueName: karpenter-interruption-queue

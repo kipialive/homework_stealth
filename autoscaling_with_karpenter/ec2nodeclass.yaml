@@ -1,0 +1,17 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: mixed-capacity
+spec:
+  amiFamily: AL2
+  amiSelectorTerms:
+    - id: "ami-0676a735c5f8e67c4"
+    # - tags:
+    #     karpenter.sh/discovery: "affico360-dev-eks-01"
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "affico360-dev-eks-01"
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "affico360-dev-eks-01"
+  instanceProfile: KarpenterNodeInstanceProfile-eks-affico360

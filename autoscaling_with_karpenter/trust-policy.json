@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::389426476195:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/12EE2FD6C7D5B400A7B1A37D189099A8"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.us-west-2.amazonaws.com/id/12EE2FD6C7D5B400A7B1A37D189099A8:sub": "system:serviceaccount:karpenter:karpenter"
+        }
+      }
+    }
+  ]
+}

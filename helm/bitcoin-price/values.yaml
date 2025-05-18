@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: 389426476195.dkr.ecr.us-west-2.amazonaws.com/bitcoin-api
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  ILS: "3.75"
+  USD: "1.00"
+  BITCOIN_API_URL: "https://api.coingecko.com/api/v3/simple/price"
+
+configMap:
+  create: true
+  name: otel-config
+
+resources: {}

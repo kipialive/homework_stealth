@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitcoin-price
+  labels:
+    app: bitcoin-price
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: bitcoin-price
+  template:
+    metadata:
+      labels:
+        app: bitcoin-price
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
+    spec:
+      containers:
+        - name: bitcoin-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: ILS
+              value: "{{ .Values.env.ILS }}"
+            - name: USD
+              value: "{{ .Values.env.USD }}"
+            - name: BITCOIN_API_URL
+              value: "{{ .Values.env.BITCOIN_API_URL }}"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector-proxy.monitoring.svc.cluster.local:4318
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=bitcoin-api
+            - name: OTEL_TRACES_EXPORTER
+              value: otlp
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
